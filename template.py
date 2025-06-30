@@ -6,7 +6,7 @@ from sqlalchemy import true # for logging messages at run time
 
 logging.basicConfig(level=logging.INFO,format='[%(asctime)s]: %(message)s:')
 
-project_name='textSummerizer'
+project_name='textSummarizer'
 
 list_of_files=[
   ".github/workflows/.gitkeep",
