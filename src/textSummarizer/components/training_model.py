@@ -29,15 +29,15 @@ class ModelTrainer:
 
     #hardcode it in this function
     trainer_args = TrainingArguments(
-            output_dir=self.config.root_dir, num_train_epochs=1, warmup_steps=500,
-            per_device_train_batch_size=1, per_device_eval_batch_size=1,
-            weight_decay=0.01, logging_steps=10,
-            evaluation_strategy='steps', eval_steps=500, save_steps=1e6,
-            gradient_accumulation_steps=16,report_to=[]
+            output_dir=self.config.root_dir, num_train_epochs=1, warmup_steps=0,
+            per_device_train_batch_size=4, per_device_eval_batch_size=4,
+            weight_decay=0.01, logging_steps=50,
+            evaluation_strategy='epoch', save_strategy='no',disable_tqdm=True,
+            gradient_accumulation_steps=1,report_to=[],overwrite_output_dir=True
         ) 
     trainer=Trainer(model=model_t5,args=trainer_args,tokenizer=tokenizer,
                     data_collator=seq2seq_data_collator,
-                    train_dataset=dataset_samsum_pt['test'],
+                    train_dataset=dataset_samsum_pt['train'].select(range(1000)),
                     eval_dataset=dataset_samsum_pt['validation'])
     
     trainer.train()
@@ -47,6 +47,7 @@ class ModelTrainer:
 
     ##save tokenizer
     tokenizer.save_pretrained(os.path.join(self.config.root_dir,"tokenizer"))
+
 
 
 
